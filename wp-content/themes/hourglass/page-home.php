@@ -38,21 +38,31 @@ $currentPostId = 18;
 </head>
 
 <script>
-    var post = {};
-    var allPosts = [];
-    var selecedTitles = [];
+    let post = {};
+    let post2 = {};
+    let post3 = {};
+    let allPosts = [];
+    let selecedTitles = [];
+    let userDetails = {};
+    let historyPosts = [];
 
-    /**
-     * This will load all the posts from the backend
-     * This will act as an async function
-     */
-    const loadAllPosts = async () => {
-        return "hello";
-    }
+    // post["postId"] = 1;
+    // post["postTitle"] = "first";
+    // post["timestamp"] = "sep 1 - 12:34pm";
 
-    loadAllPosts().then( (value) => {
-        console.log(value);
-    })
+    // allPosts.push(post);
+
+    // post2["postId"] = 2;
+    // post2["postTitle"] = "second";
+    // post2["timestamp"] = "sep 1 - 12:34pm";
+
+    // allPosts.push(post2);
+
+    // post3["postId"] = 3;
+    // post3["postTitle"] = "third";
+    // post3["timestamp"] = "sep 1 - 12:34pm";
+
+    // allPosts.push(post3);
 
     /**
      * Use this function to get the data from all posts
@@ -63,6 +73,36 @@ $currentPostId = 18;
         document.getElementById("wiki_content_author_details").innerHTML = `${publishedDate} -- by ${author}`;
     }
 
+    const loadHistoryContent = () => {
+        if (JSON.parse(localStorage.getItem("historyPosts")) != null) {
+            historyPosts = JSON.parse(localStorage.getItem("historyPosts"));
+        }
+    }
+
+    const storeSelectedTitleForHistory = (postId) => {
+        let selectedPost = null;
+        let historyPostFound = false;
+        for (const post of allPosts) {
+            if (post.postId == postId) {
+                selectedPost = post;
+                // Check if post is in history
+                for (const historyPost of historyPosts) {
+                    if (historyPost.postId == selectedPost.postId) {
+                        historyPostFound = true;
+                        break;
+                    }
+                }
+
+                if (!historyPostFound) {
+                    historyPosts.push(selectedPost);
+                    localStorage.setItem("historyPosts", `${JSON.stringify(historyPosts)}`);
+                }
+                
+                break;
+            }
+        }
+    }
+
     const loadGraph = () => {
 
     }
@@ -71,11 +111,8 @@ $currentPostId = 18;
 
     }
 
-    const loadHistoryContent = () => {
-
-    }
-
-    
+    // INVOKING LOADING FUNCTIONS
+    loadHistoryContent();
 </script>
 
 <body style="overflow: hidden;">
